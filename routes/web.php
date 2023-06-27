@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\backend\BackendAdminController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,11 +18,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [IndexController::class, 'Index'])->name('home');
+Route::get('/', function(){
+    return view('/auth/login');
+})->name('home');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -55,6 +56,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::delete('/user/delete/{id}/','UserDelete')->name('user.delete');
 
         Route::get('/get/data/members/', 'GetDataMembers')->name('get.data.members');
+        Route::get('/member/{id}/edit/','MemberEdit')->name('member.edit');
+        Route::delete('/member/delete/{id}/','MemberDelete')->name('member.delete');
+
         Route::get('/departments/index/','departmentsIndex')->name('departments.index');
         Route::post('/departments/store/','DepartmentsStore')->name('departments.store');
 
@@ -63,4 +67,19 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/student-all/ajax/{AllCourse}','StudentAllAjax');
     });
    
+});
+
+
+Route::middleware(['auth', 'role:user'])->group(function () {
+
+    Route::group(['controller' => UserController::class], function () {
+
+        Route::get('/dashboard', 'dashboard')->name('dashboard');
+        Route::get('/user/logout','UserDestroy')->name('user.logout');
+
+        Route::get('/user/account/page','UserAccount')->name('user.account.page');
+
+        Route::post('/user/profile/store','UserProfileStore')->name('user.profile.store');
+    });
+
 });

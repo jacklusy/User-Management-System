@@ -188,7 +188,7 @@
                     $.each(response, function(key, user) {
                         var table = $("#user-table tbody").append(
                             "<tr>" +
-                            "<td>" + user.id + "</td>" +
+                            "<td>" + (key + 1)  + "</td>" +
                             "<td>" + user.firstname + " " + user.lastname + "</td>" +
                             "<td>" + user.email + "</td>" +
                             "<td>" + user.phone + "</td>" +

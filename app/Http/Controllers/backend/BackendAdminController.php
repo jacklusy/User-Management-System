@@ -206,12 +206,59 @@ class BackendAdminController extends Controller
 
     public function GetDataMembers()
     {
-        $members = member::all();
+        //$members = member::all();
+
+        $members = member::join('users', 'members.user_id', '=', 'users.id')
+        ->join('departments', 'members.department_id', '=', 'departments.id')
+        ->get([
+            'members.id',
+            'members.department_id',
+            'members.user_id',
+            'users.firstname',
+            'users.lastname',
+            'users.email',
+            'departments.departmentName'
+        ]);
+
         if (! $members) {
             abort(404);
         }
         return $members;
     }
 
+    public function MemberDelete($id)
+    {
+        $member = member::find($id);
+        if (!$member) {
+            abort(404);
+        }
+        $member->delete();
+        return response()->json([
+            'success' => 'member Deleted Successfully'
+        ], 201);
+    }
+
+
+    public function MemberEdit($id)
+    {
+        $member = Member::find($id)
+        ->join('users', 'members.user_id', '=', 'users.id')
+        ->join('departments', 'members.department_id', '=', 'departments.id')
+        ->select([
+            'members.id',
+            'members.department_id',
+            'members.user_id',
+            'users.firstname',
+            'users.lastname',
+            'users.email',
+            'departments.departmentName'
+        ])
+        ->first();
+
+        if (!$member) {
+            abort(404);
+        }
+        return $member;
+    }
 
 }
