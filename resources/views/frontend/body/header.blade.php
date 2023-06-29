@@ -9,67 +9,58 @@
     <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
         <div class="container">
             <div class="header-wrap">
+                <div class="header-left">
 
+                    <nav>
+                        <ul>
+                            <li>
+                                <a href="{{ url('/dashboard') }}">Home</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
                 <div class="header-right">
 
                     <div class="header-action-right">
                         <div class="header-action-2">
-                            {{-- <div class="search-location">
-                                <form action="{{ route('product.search') }}" method="post">
-                            @csrf
+                            <div class="header-action-icon-2">
 
-                            </form>
-                        </div> --}}
+                                @auth
 
-                        <nav>
-                            <ul>
+                                <a href="{{route('dashboard')}}">
+                                    <img class="svgInject" alt="Nest" src="{{asset('frontend/assets/imgs/theme/icons/icon-user.svg')}} " />
 
-                                <li>
-                                    <a href="{{ url('/dashboard') }}">Home</a>
-                                </li>
-                            </ul>
-                        </nav>
+                                </a>
+                                <a href="{{route('dashboard')}}"><span class="lable ml-0"></span></a>
+                                <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
+                                    <ul>
+                                        <li>
+                                            <h6>{{Auth::user()->firstname}} {{Auth::user()->lastname}}</h6>
+                                        </li>
+                                        <hr>
+                                        <li>
+                                            <a href="{{route('user.account.page')}}">Profile</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('user.logout')}}"><i class="fi fi-rs-sign-out mr-10"></i>Sign out</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                @else
+                                <a href="{{route('login')}}">
+                                    <img class="svgInject" alt="Nest" src="{{asset('frontend/assets/imgs/theme/icons/icon-user.svg')}} " />
+                                </a>
+
+                                @endauth
 
 
-                        <div class="header-action-icon-2">
-
-                            @auth
-
-                            <a href="{{route('dashboard')}}">
-                                <img class="svgInject" alt="Nest" src="{{asset('frontend/assets/imgs/theme/icons/icon-user.svg')}} " />
-
-                            </a>
-                            <a href="{{route('dashboard')}}"><span class="lable ml-0"></span></a>
-                            <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
-                                <ul>
-                                    <li>
-                                        <h6>{{Auth::user()->firstname}} {{Auth::user()->lastname}}</h6>
-                                    </li>
-                                    <hr>
-                                    <li>
-                                        <a href="{{route('user.account.page')}}">Profile</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{route('user.logout')}}"><i
-                                            class="fi fi-rs-sign-out mr-10"></i>Sign out</a>
-                                    </li>
-                                </ul>
                             </div>
-
-                            @else
-                            <a href="{{route('login')}}">
-                                <img class="svgInject" alt="Nest" src="{{asset('frontend/assets/imgs/theme/icons/icon-user.svg')}} " />
-                            </a>
-
-                            @endauth
-
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <div class="header-bottom header-bottom-bg-color sticky-bar">
@@ -121,14 +112,9 @@
                 <nav>
                     <ul class="mobile-menu font-heading">
                         <li>
-                            <a class="active" href="{{ url('/') }}">Home</a>
+                            <a class="active" href="{{ url('/dashboard') }}">Home</a>
 
                         </li>
-                        <li>
-                            <a class="active" href="">Chat</a>
-
-                        </li>
-
 
                     </ul>
                 </nav>

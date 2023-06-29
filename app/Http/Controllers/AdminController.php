@@ -15,6 +15,11 @@ class AdminController extends Controller
 
     } // End Method
 
+    public function AdminLogin() {
+        return view('auth.login');
+    } // End Method
+
+    
     public function AdminProfile() {
         $id = Auth::user()->id;
         $adminData = User::find($id);

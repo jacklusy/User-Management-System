@@ -5,6 +5,7 @@ use App\Http\Controllers\backend\BackendAdminController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
+Route::get('/admin/login',[AdminController::class,'AdminLogin'])->middleware(RedirectIfAuthenticated::class);
 
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -56,6 +58,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::delete('/user/delete/{id}/','UserDelete')->name('user.delete');
 
         Route::get('/get/data/members/', 'GetDataMembers')->name('get.data.members');
+        Route::get('/users-all/ajax/{memberID}','UsersAllAjax');
+        Route::get('/get/departments/{userID}','getDepartment')->name('get.departments');
+        Route::post('/MemberEdit/store/{memberID}','MemberStoreEdit')->name('MemberEdit.store');
+
         Route::get('/member/{id}/edit/','MemberEdit')->name('member.edit');
         Route::delete('/member/delete/{id}/','MemberDelete')->name('member.delete');
 

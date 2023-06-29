@@ -8,6 +8,7 @@ use App\Models\member;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class BackendAdminController extends Controller
@@ -99,7 +100,7 @@ class BackendAdminController extends Controller
                 'password' => Hash::make($request->password),
                 'phone' => $request->phone,
                 'gender' => $request->gender,
-                'created_at' =>Carbon::now(),
+                'created_at' => Carbon::now(),
             ]);
 
             return response()->json([
@@ -143,88 +144,94 @@ class BackendAdminController extends Controller
 
     /////////////// Departments /////////////////
 
-    public function departmentsIndex() {
+    public function departmentsIndex()
+    {
         return view('admin.departments.department');
     }
 
 
-    public function DepartmentsStore(Request $request) {
+    public function DepartmentsStore(Request $request)
+    {
         $request->validate([
-            'departmentName' => 'required' ,
+            'departmentName' => 'required',
         ]);
 
         department::insert([
             'departmentName' => $request->departmentName,
-            'created_at' =>Carbon::now(),
+            'created_at' => Carbon::now(),
 
         ]);
 
         return response()->json([
             'success' => 'Department Created Successfully'
-        ],201);
+        ], 201);
     }
 
 
     public function AllDepartment()
     {
         $department = department::all();
-        if (! $department) {
+        if (!$department) {
             abort(404);
         }
         return $department;
     }
 
-    public function StudentAllAjax($AllCourse) 
+
+    public function StudentAllAjax($AllCourse)
     {
         $Members = member::where('department_id', $AllCourse)->get();
         $userMem = $Members->pluck('user_id')->toArray();
-        $users = User::whereNotIn('id', $userMem)->where('role','!=','admin')->get();
+        $users = User::whereNotIn('id', $userMem)->where('role', '!=', 'admin')->get();
 
         return json_encode($users);
     }
 
 
-    public function MemberStore(Request $request) {
+    public function MemberStore(Request $request)
+    {
         $request->validate([
-            'department_id' => 'required' ,
-            'user_id' => 'required' ,
+            'department_id' => 'required',
+            'user_id' => 'required',
         ]);
 
         member::create([
             'department_id' => $request->department_id,
             'user_id' => $request->user_id,
-            'created_at' =>Carbon::now(),
+            'created_at' => Carbon::now(),
 
         ]);
 
         return response()->json([
             'success' => 'Member Created Successfully'
-        ],201);
-
-        
+        ], 201);
     }
-
-    public function GetDataMembers()
+    
+    public function GetDataMembers(Request $request)
     {
-        //$members = member::all();
-
-        $members = member::join('users', 'members.user_id', '=', 'users.id')
-        ->join('departments', 'members.department_id', '=', 'departments.id')
-        ->get([
-            'members.id',
-            'members.department_id',
-            'members.user_id',
-            'users.firstname',
-            'users.lastname',
-            'users.email',
-            'departments.departmentName'
-        ]);
-
-        if (! $members) {
-            abort(404);
-        }
-        return $members;
+        $searchTerm = $request->input('search');
+    
+        $members = Member::join('users', 'members.user_id', '=', 'users.id')
+                ->join('departments', 'members.department_id', '=', 'departments.id')
+                ->where(function ($query) use ($searchTerm) {
+                    $query->where('users.firstname', 'LIKE', '%'.$searchTerm.'%')
+                        ->orWhere('users.lastname', 'LIKE', '%'.$searchTerm.'%')
+                        ->orWhere('users.email', 'LIKE', '%'.$searchTerm.'%')
+                        ->orWhere('departments.departmentName', 'LIKE', '%'.$searchTerm.'%');
+                })
+                ->get([
+                    'members.id',
+                    'members.department_id',
+                    'members.user_id',
+                    'users.firstname',
+                    'users.lastname',
+                    'users.email',
+                    'departments.departmentName'
+                ]);
+    
+        return response()->json($members);
     }
+
 
     public function MemberDelete($id)
     {
@@ -239,21 +246,44 @@ class BackendAdminController extends Controller
     }
 
 
+    public function UsersAllAjax($memberID)
+    {
+
+        $member = Member::where('members.id', $memberID)
+            ->join('users', 'members.user_id', '=', 'users.id')
+            ->join('departments', 'members.department_id', '=', 'departments.id')
+            ->select([
+                'members.id',
+                'members.department_id',
+                'members.user_id',
+                'users.firstname',
+                'users.lastname',
+                'users.email',
+                'departments.departmentName'
+            ])
+            ->first();
+
+        if (!$member) {
+            abort(404);
+        }
+        return json_encode($member);
+    }
+
     public function MemberEdit($id)
     {
-        $member = Member::find($id)
-        ->join('users', 'members.user_id', '=', 'users.id')
-        ->join('departments', 'members.department_id', '=', 'departments.id')
-        ->select([
-            'members.id',
-            'members.department_id',
-            'members.user_id',
-            'users.firstname',
-            'users.lastname',
-            'users.email',
-            'departments.departmentName'
-        ])
-        ->first();
+        $member = Member::where('members.id', $id)
+            ->join('users', 'members.user_id', '=', 'users.id')
+            ->join('departments', 'members.department_id', '=', 'departments.id')
+            ->select([
+                'members.id',
+                'members.department_id',
+                'members.user_id',
+                'users.firstname',
+                'users.lastname',
+                'users.email',
+                'departments.departmentName'
+            ])
+            ->first();
 
         if (!$member) {
             abort(404);
@@ -261,4 +291,39 @@ class BackendAdminController extends Controller
         return $member;
     }
 
+    public function getDepartment($userID)
+    {
+        $department = DB::select('
+            SELECT DISTINCT departments.*
+            FROM departments
+            WHERE departments.id IN (
+                SELECT DISTINCT department_id
+                FROM members
+                WHERE user_id != ?
+            )
+        ', [$userID]);
+
+        if (!$department) {
+            abort(404);
+        }
+        return $department;
+    }
+
+    public function MemberStoreEdit(Request $request, $memberID)
+    {
+        $request->validate([
+            'departmentID' => 'required',
+        ]);
+
+
+        member::where('id', $memberID)
+            ->update([
+                'department_id' => $request->departmentID,
+                'updated_at' => Carbon::now(),
+            ]);
+
+        return response()->json([
+            'success' => 'Member Updated Successfully'
+        ], 201);
+    }
 }

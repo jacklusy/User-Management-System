@@ -57,4 +57,45 @@ class UserController extends Controller
 
         return redirect('/login')->with($notification);
     } // End Method
+
+
+    public function UserProfileStore(Request $request){
+        $id = Auth::user()->id;
+        $data = User::find($id);
+
+        if($request ->file('photo')){
+            $file = $request ->file('photo');
+            @unlink(public_path('upload/user_images/'.$data->photo));
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('upload/user_images'),$filename);
+
+            User::findOrFail($id)->update([
+                'firstname' => $request->firstname,
+                'lastname' => $request->lastname,
+                'email' => $request->email,
+                'photo' => $filename,
+                'phone' => $request->phone,
+                'gender' => $request->gender,
+            ]);
+        }else {
+            User::findOrFail($id)->update([
+                'firstname' => $request->firstname,
+                'lastname' => $request->lastname,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'gender' => $request->gender,
+            ]);
+            $notification = array(
+                'message' => 'User Profile Updated Successfully',
+                'alert-type' => 'success'
+            );
+            return redirect()->back()->with($notification);
+        }
+
+      
+
+
+
+
+    } // End Method
 }

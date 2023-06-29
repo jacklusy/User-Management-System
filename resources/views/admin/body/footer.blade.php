@@ -1,3 +1,5 @@
-<footer class="page-footer">
-    <p class="mb-0">Copyright © 2021. All right reserved.</p>
-</footer>
+<div class="footer">
+    <div class="copyright">
+        <p>Copyright © Designed &amp; Developed by <a href="https://dexignlab.com/" target="_blank">DexignLab</a> 2022</p>
+    </div>
+</div>

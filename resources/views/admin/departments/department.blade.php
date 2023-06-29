@@ -1,53 +1,43 @@
 @extends('admin.master_dashboard')
 
 @section('admin')
-<div class="page-content">
-    <div class="card">
-        <div class="card-body">
-            <div class="table-responsive">
-                <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap5">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="Create_Courses" data-bs-target="#CreateCourses">Create Department</button>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="Create_Member" data-bs-target="#member">Join Courses</button>
-
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                            <div id="example2_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="example2"></label></div>
-                        </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-body">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="Create_Courses" data-bs-target="#CreateCourses">Create Department</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="Create_Member" data-bs-target="#member">Join Courses</button>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <table id="members-table" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="example2_info">
-                                <thead>
-                                    <tr role="row">
-                                        <th>SL</th>
-                                        <th>Name User</th>
-                                        <th>Email</th>
-                                        <th>department</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>SL</th>
-                                        <th>Name User</th>
-                                        <th>Email</th>
-                                        <th>department</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div class="col-12 d-flex justify-content-end">
+                            <div class="">
+                                <input type="search" class="form-control" placeholder="Search" id="searchInput">
+                            </div>
                         </div>
+                        <table id="example3" class="display members-table " style="min-width: 845px">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Name User</th>
+                                    <th>Email</th>
+                                    <th>department</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <div class="modal fade ajax-model2" id="CreateCourses" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
@@ -126,43 +116,41 @@
 
 </div>
 
-<div class="modal fade ajax-model77" id="EditMember" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-    <form action="" id="FormMember">
+<div class="modal fade ajax-model33" id="member-2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <form action="" id="FormMemberEdit">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Departments</h5>
+                    <h5 class="modal-title-2" id="exampleModalLabel">Edit Member</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="col-lg-11">
                         <div class="form-group focused">
-                            <!-- {{-- <input type="hidden" name="user_id" id="user_id"> --}} -->
-                            <label class="form-control-label" for="input-username">Department</label>
+
+                            <label class="form-control-label" for="userID">Users</label>
+                            <select class="form-select mb-3" id="userID" name="userID" aria-label="Default select example">
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-11">
+                        <div class="form-group focused">
+                            <input type="hidden" name="memberID" id="memberID">
+                            <label class="form-control-label" for="departmentID">Department</label>
                             <select class="form-select mb-3" id="departmentID" name="departmentID" aria-label="Default select example">
 
                             </select>
 
                         </div>
                     </div>
-                    <div class="col-lg-11">
-                        <div class="form-group focused">
 
-                            <label class="form-control-label" for="input-username">Users</label>
-                            <select class="form-select mb-3" id="userID" name="userID" aria-label="Default select example">
-
-                            </select>
-                        </div>
-                    </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="" id="In_active">
-
-                    </div>
-
                     <div>
-                        <button type="button" id="btnMember" class="btn btn-primary">Save Member</button>
+                        <button type="button" id="savebtnMemberEdit" class="btn btn-primary">Update</button>
                     </div>
                 </div>
             </div>
@@ -182,26 +170,31 @@
             }
         })
 
-
+        //// table///
         function getDataMembers() {
+            var searchTerm = $("#searchInput").val().trim();
+
             $.ajax({
                 url: "{{ route('get.data.members') }}",
                 method: "GET",
+                data: {
+                    search: searchTerm
+                },
                 success: function(response) {
-                    // empty the table body first
-                    $("#members-table tbody").empty();
-                    console.log(response.success, 'DATA');
-                    // loop through the response data and append it to the table
+                    $(".members-table tbody").empty();
+
                     $.each(response, function(key, member) {
-                        var table = $("#members-table tbody").append(
+                        var table = $(".members-table tbody").append(
                             "<tr>" +
                             "<td>" + (key + 1) + "</td>" +
                             "<td>" + member.firstname + " " + member.lastname + "</td>" +
                             "<td>" + member.email + "</td>" +
                             "<td>" + member.departmentName + "</td>" +
                             "<td>" +
-                            "<a href='javascript:void(0)' class='btn btn-info EditMember' data-id='" + member.id + "'>Edit</a>" +
-                            "<a href='javascript:void(0)' id='delete' class='btn btn-danger delBtn' data-id='" + member.id + "'>Delete</a>" +
+                            "<div class='d-flex'>" +
+                            "<a href='javascript:void(0)' class='btn btn-primary shadow btn-xs sharp me-1 EditMember' data-id='" + member.id + "'><i class='fas fa-pencil-alt'></i></a>" +
+                            "<a href='javascript:void(0)' id='delete' class='btn btn-danger shadow btn-xs sharp delBtn' data-id='" + member.id + "'><i class='fa fa-trash'></i></a>" +
+                            "<div>" +
                             "</td>" +
                             "</tr>"
                         );
@@ -213,29 +206,76 @@
                 }
             });
         }
-
         getDataMembers();
 
-        $('body').on('click', '.EditMember', function() {
 
-            var id = $(this).data('id');
+        $("#searchInput").on("change", function() {
+            getDataMembers();
+        });
+
+
+        ///// get edit data table
+        function getDataEdit(memberID) {
 
             $.ajax({
-                url: '{{ url("member") }}/' + id + '/edit',
+                url: '{{ url("users-all/ajax/") }}/' + memberID,
+                method: "GET",
+                dataType: "json",
+                success: function(value) {
+                    $("#userID").empty();
+
+                    var option = $("#userID").append(
+                        '<option selected value="' + value.user_id + '">' + value.firstname + ' ' + value.lastname + '</option>'
+                    );
+
+                    var userID = value.user_id;
+                    if (userID) {
+                        $.ajax({
+                            url: '{{ url("get/departments/") }}/' + userID,
+                            method: 'GET',
+                            dataType: "json",
+                            success: function(data) {
+
+                                $('select[name="departmentID"]').html('');
+                                var d = $('select[name="departmentID"]').empty();
+
+                                $.each(data, function(key, value) {
+                                    $('select[name="departmentID"]').append('<option value="' + value.id + '">' + value.departmentName + '</option>');
+                                });
+                            },
+
+                        });
+                    } else {
+                        alert('danger');
+                    }
+
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+
+        }
+
+
+
+        /////  edit data table
+        $('body').on('click', '.EditMember', function() {
+
+            var memberID = $(this).data('id');
+            var member_id = $("#memberID").val(memberID);
+
+            getDataEdit(memberID);
+
+            $.ajax({
+                url: '{{ url("member") }}/' + memberID + '/edit',
                 method: 'GET',
-
                 success: function(response) {
-                    $(".ajax-model77").modal('show');
-                    $('.modal-title').html('Edit Member');
-                    $('#btnMember').html('Update');
-                    // $('.password').hide();
+                    $(".ajax-model33").modal('show');
+                    $('.modal-title-2').html('Edit Member');
+                    $('#savebtnMemberEdit').html('Update');
 
-                    $('#userID').val(response.firstname);
-                    $('#departmentID').val(response.lastname);
-
-
-                    console.log(response);
-
+                    console.log(response, 'noooooooooooooooo');
 
                 },
                 error: function(error) {
@@ -246,6 +286,37 @@
 
         });
 
+        //// post data edit table
+        var formDatamembersEdit = $("#FormMemberEdit")[0];
+        $('#savebtnMemberEdit').click(function() {
+            console.log('hi');
+            var FormMemEdit = new FormData(formDatamembersEdit);
+            var memberID = $("#memberID").val();
+
+            $.ajax({
+                url: '{{ url("MemberEdit/store/") }}/' + memberID,
+                method: 'POST',
+                processData: false,
+                contentType: false,
+                data: FormMemEdit,
+                dataType: 'json',
+
+                success: function(response) {
+
+                    getDataMembers();
+
+                    console.log(response, 'response Member');
+                    $(".ajax-model33").modal('hide');
+
+                },
+                error: function(error) {
+                    console.log(error, 'error');
+                }
+            });
+
+        });
+
+        /// delete data table
         $('body').on('click', '.delBtn', function() {
             var id = $(this).data('id');
 
@@ -266,6 +337,9 @@
 
         });
 
+
+
+        //// create departments
         var FormCreateDepartments = $("#FormCreateDepartments")[0];
         $('#savebtnCreatedepartments').click(function() {
 
@@ -295,16 +369,16 @@
             });
         });
 
+        //// clear data departments
         $('#Create_Courses').click(function() {
-            $('.modal-title').html('Create Courses');
-            $('.savebtn').html('Save Course');
+            $('.modal-title').html('Create Department');
+            $('.savebtn').html('Save Department');
 
             $('#departmentName').val('');
-            $('#mark').val('');
 
         });
 
-        // get all data courses
+        // get data departments
         function getData() {
             $.ajax({
                 url: "{{ route('all.departments') }}",
@@ -314,10 +388,10 @@
                     $("#department_id").empty();
 
                     // loop through the response data and append it to the table
-                    $.each(response, function(key, department) {
+                    $.each(response, function(key, value) {
                         var option = $("#department_id").append(
 
-                            "<option value=" + department.id + ">" + department.departmentName + "</option>"
+                            "<option value=" + value.id + ">" + value.departmentName + "</option>"
 
                         );
                     });
@@ -355,13 +429,11 @@
 
         }
 
-        // call the function to display user data on page load
         getData();
 
 
-
+        /// post data member
         var formDatamembers = $("#FormMember")[0];
-
         $('#savebtnMember').click(function() {
 
             var FormMem = new FormData(formDatamembers);
@@ -391,6 +463,7 @@
 
         });
 
+        /// clear data member
         $('#Create_Member').click(function() {
             $('.modal-title').html('Members');
             $('.savebtn').html('Save Member');
@@ -399,6 +472,10 @@
             $('#user_id').val('');
 
         });
+
+
+
+
 
 
     });
