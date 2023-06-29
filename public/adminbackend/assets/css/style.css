@@ -20109,7 +20109,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   max-width: 6.25rem;
   position: relative;
   z-index: 1;
-  margin-top: -4.5rem;
+  margin-top: -1.5rem;
   margin-right: 0.625rem; }
   @media only screen and (max-width: 575px) {
     .profile .profile-photo {
