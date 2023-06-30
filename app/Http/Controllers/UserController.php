@@ -72,6 +72,12 @@ class UserController extends Controller
                 'phone' => $request->phone,
                 'gender' => $request->gender,
             ]);
+
+            $notification = array(
+                'message' => 'User Profile Updated Successfully',
+                'alert-type' => 'success'
+            );
+            return redirect()->back()->with($notification);
         }else {
             User::findOrFail($id)->update([
                 'firstname' => $request->firstname,
@@ -86,11 +92,6 @@ class UserController extends Controller
             );
             return redirect()->back()->with($notification);
         }
-
-      
-
-
-
 
     } // End Method
 }

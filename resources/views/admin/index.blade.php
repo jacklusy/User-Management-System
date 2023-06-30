@@ -10,7 +10,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-body">
-                        <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg">Create User</button>
+                        <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" id="add_User" data-bs-target=".bd-example-modal-lg">Create User</button>
                         <div class="modal fade bd-example-modal-lg ajax-model" id="addUser" tabindex="-1" role="dialog" aria-hidden="true">
                             <form action="" id="ajaxForm">
                                 @csrf
@@ -42,7 +42,7 @@
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                     <label class="form-label">Phone</label>
-                                                    <input type="text" id="phone" name="phone" class="form-control" placeholder="Password">
+                                                    <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone">
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                     <fieldset class="mb-3">
