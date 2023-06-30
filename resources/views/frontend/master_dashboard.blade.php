@@ -66,7 +66,7 @@
     <script src="{{asset('frontend/assets/js/custom.min.js')}}"></script>
     <script src="{{asset('frontend/assets/js/dlabnav-init.js')}}"></script>
     <script src="{{asset('frontend/assets/js/demo.js')}}"></script>
-    <script src="{{asset('frontend/assets/js/styleSwitcher.js')}}"></script>
+    <!-- <script src="{{asset('frontend/assets/js/styleSwitcher.js')}}"></script> -->
 
     <script type="text/javascript">
         $(document).ready(function() {
