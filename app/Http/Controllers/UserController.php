@@ -20,15 +20,10 @@ class UserController extends Controller
     public function dashboard() {
         
         $user_id = Auth::user()->id;
-        $members = member::find($user_id)
+        $members = member::where('user_id',$user_id)
         ->join('users', 'members.user_id', '=', 'users.id')
         ->join('departments', 'members.department_id', '=', 'departments.id')
         ->select([
-            'members.id',
-            'members.department_id',
-            'members.user_id',
-            'users.firstname',
-            'users.lastname',
             'users.email',
             'departments.departmentName'
         ])

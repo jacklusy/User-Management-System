@@ -1,112 +1,72 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en">
+<html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <title>3DIMEN</title>
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <meta name="description" content="" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="admin, dashboard">
+    <meta name="author" content="DexignZone">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Dompet : Payment Admin Template">
+    <meta property="og:title" content="Dompet : Payment Admin Template">
+    <meta property="og:description" content="Dompet : Payment Admin Template">
+    <meta property="og:image" content="https://dompet.dexignlab.com/xhtml/social-image.png">
+    <meta name="format-detection" content="telephone=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta property="og:title" content="" />
-    <meta property="og:type" content="" />
-    <meta property="og:url" content="" />
-    <meta property="og:image" content="" />
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset('frontend/img/3D.png')}} " />
-    <!-- Template CSS -->
-    <link rel="stylesheet" href="{{asset('frontend/assets/css/plugins/animate.min.css')}} " />
-    <link rel="stylesheet" href="{{asset('frontend/assets/css/main.css?v=5.3')}} " />
-    <link rel="stylesheet" href="{{asset('frontend/assets/css/my.css')}} " />
-    {{-- notifications --}}
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" type="text/css" media="all" />
+
+    <!-- PAGE TITLE HERE -->
+    <title>Dompet : Payment Admin Template</title>
+
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/png" href="{{asset('frontend/assets/images/favicon.png')}}">
+    <!-- Datatable -->
+    <link href="{{asset('frontend/assets/vendor/datatables/css/jquery.dataTables.min.css')}}" rel="stylesheet">
+    <!-- Custom Stylesheet -->
+    <link href="{{asset('frontend/assets/vendor/jquery-nice-select/css/nice-select.css')}}" rel="stylesheet">
+    <link href="{{asset('frontend/assets/css/style.css')}}" rel="stylesheet">
 
 </head>
 
 <body>
 
+    @include('frontend.body.preloader')
 
-    <!-- Header  -->
-    @include('frontend.body.header')
+    <div id="main-wrapper">
 
-    <main class="main">
-        @yield('main')
-    </main>
+        @include('frontend.body.header')
 
 
-    @include('frontend.body.footer')
+        <div class="content-body">
+            @yield('main')
+        </div>
 
 
-    <!-- Preloader Start -->
+		@include('frontend.body.footer')
 
-    {{-- <div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center">
-            <div class="preloader-inner position-relative">
-                <div class="text-center">
-                    <img src="{{asset('frontend/assets/imgs/theme/loading.gif')}} " alt="" />
     </div>
-    </div>
-    </div>
-    </div> --}}
-
-    <!-- Vendor JS-->
-    <script src="https://kit.fontawesome.com/b56885f075.js" crossorigin="anonymous"></script>
-
-    <script src="{{asset('frontend/assets/js/vendor/modernizr-3.6.0.min.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/vendor/jquery-3.6.0.min.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/vendor/jquery-migrate-3.3.0.min.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/vendor/bootstrap.bundle.min.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/plugins/slick.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/plugins/jquery.syotimer.min.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/plugins/waypoints.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/plugins/wow.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/plugins/perfect-scrollbar.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/plugins/magnific-popup.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/plugins/select2.min.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/plugins/counterup.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/plugins/jquery.countdown.min.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/plugins/images-loaded.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/plugins/isotope.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/plugins/scrollup.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/plugins/jquery.vticker-min.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/plugins/jquery.theia.sticky.js')}} "></script>
-    <script src="{{asset('frontend/assets/js/plugins/jquery.elevatezoom.js')}} "></script>
-    <!-- Template  JS -->
-    <script src="{{asset('frontend/assets/js/main.js?v=5.3')}} "></script>
-    <script src="{{asset('frontend/assets/js/shop.js?v=5.3')}} "></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    {{-- start notifications --}}
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 
-    <!-- @if(Session::has('message'))
-		var type = "{{ Session::get('alert-type','info') }}"
-		switch(type){
-			case 'info':
-			toastr.info(" {{ Session::get('message') }} ");
-			break;
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="{{asset('frontend/assets/vendor/global/global.min.js')}}"></script>
+    <script src="{{asset('frontend/assets/vendor/chart.js/Chart.bundle.min.js')}}"></script>
+    <!-- Apex Chart -->
+    <script src="{{asset('frontend/assets/vendor/apexchart/apexchart.js')}}"></script>
 
-			case 'success':
-			toastr.success(" {{ Session::get('message') }} ");
-			break;
+    <!-- Datatable -->
+    <script src="{{asset('frontend/assets/vendor/datatables/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('frontend/assets/js/plugins-init/datatables.init.js')}}"></script>
 
-			case 'warning':
-			toastr.warning(" {{ Session::get('message') }} ");
-			break;
+    <script src="{{asset('frontend/assets/vendor/jquery-nice-select/js/jquery.nice-select.min.js')}}"></script>
 
-			case 'error':
-			toastr.error(" {{ Session::get('message') }} ");
-			break; 
-		}
-		@endif  -->
-
+    <script src="{{asset('frontend/assets/js/custom.min.js')}}"></script>
+    <script src="{{asset('frontend/assets/js/dlabnav-init.js')}}"></script>
+    <script src="{{asset('frontend/assets/js/demo.js')}}"></script>
+    <script src="{{asset('frontend/assets/js/styleSwitcher.js')}}"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -119,10 +79,7 @@
             });
         });
     </script>
-
-    {{-- end notifications --}}
-
-
+    
 </body>
 
 </html>
